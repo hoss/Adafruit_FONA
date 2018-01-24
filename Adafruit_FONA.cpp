@@ -314,53 +314,6 @@ boolean Adafruit_FONA::setMicVolume(uint8_t a, uint8_t level)
   return sendCheckReply(F("AT+CMIC="), a, level, ok_reply);
 }
 
-
-/********* USSD *********************************************************/
-
-boolean Adafruit_FONA::sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, uint16_t *readlen)
-{
-  if (!sendCheckReply(F("AT+CUSD=1"), ok_reply))
-    return false;
-
-  char sendcmd[30] = "AT+CUSD=1,\"";
-  strncpy(sendcmd + 11, ussdmsg, 30 - 11 - 2); // 11 bytes beginning, 2 bytes for close quote + null
-  sendcmd[strlen(sendcmd)] = '\"';
-
-  if (!sendCheckReply(sendcmd, ok_reply))
-  {
-    *readlen = 0;
-    return false;
-  }
-  else
-  {
-    readline(10000); // read the +CUSD reply, wait up to 10 seconds!!!
-    //DEBUG_PRINT("* "); DEBUG_PRINTLN(replybuffer);
-    char *p = prog_char_strstr(replybuffer, PSTR("+CUSD: "));
-    if (p == 0)
-    {
-      *readlen = 0;
-      return false;
-    }
-    p += 7; //+CUSD
-    // Find " to get start of ussd message.
-    p = strchr(p, '\"');
-    if (p == 0)
-    {
-      *readlen = 0;
-      return false;
-    }
-    p += 1; //"
-    // Find " to get end of ussd message.
-    char *strend = strchr(p, '\"');
-
-    uint16_t lentocopy = min(maxlen - 1, strend - p);
-    strncpy(ussdbuff, p, lentocopy + 1);
-    ussdbuff[lentocopy] = 0;
-    *readlen = lentocopy;
-  }
-  return true;
-}
-
 /********* TIME **********************************************************/
 
 boolean Adafruit_FONA::enableNetworkTimeSync(boolean onoff)
