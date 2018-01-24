@@ -109,23 +109,6 @@ class Adafruit_FONA : public FONAStreamType {
   boolean setMicVolume(uint8_t a, uint8_t level);
   boolean playDTMF(char tone);
 
-  // FM radio functions.
-  boolean tuneFMradio(uint16_t station);
-  boolean FMradio(boolean onoff, uint8_t a = FONA_HEADSETAUDIO);
-  boolean setFMVolume(uint8_t i);
-  int8_t getFMVolume();
-  int8_t getFMSignalLevel(uint16_t station);
-
-  // SMS handling
-  boolean setSMSInterrupt(uint8_t i);
-  uint8_t getSMSInterrupt(void);
-  int8_t getNumSMS(void);
-  boolean readSMS(uint8_t i, char *smsbuff, uint16_t max, uint16_t *readsize);
-  boolean sendSMS(char *smsaddr, char *smsmsg);
-  boolean deleteSMS(uint8_t i);
-  boolean getSMSSender(uint8_t i, char *sender, int senderlen);
-  boolean sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, uint16_t *readlen);
-
   // Time
   boolean enableNetworkTimeSync(boolean onoff);
   boolean enableNTPTimeSync(boolean onoff, FONAFlashStringPtr ntpserver=0);
@@ -137,13 +120,6 @@ class Adafruit_FONA : public FONAStreamType {
   boolean getGSMLoc(uint16_t *replycode, char *buff, uint16_t maxlen);
   boolean getGSMLoc(float *lat, float *lon);
   void setGPRSNetworkSettings(FONAFlashStringPtr apn, FONAFlashStringPtr username=0, FONAFlashStringPtr password=0);
-
-  // GPS handling
-  boolean enableGPS(boolean onoff);
-  int8_t GPSstatus(void);
-  uint8_t getGPS(uint8_t arg, char *buffer, uint8_t maxbuff);
-  boolean getGPS(float *lat, float *lon, float *speed_kph=0, float *heading=0, float *altitude=0);
-  boolean enableGPSNMEA(uint8_t nmea);
 
   // TCP raw connections
   boolean TCPconnect(char *server, uint16_t port);
@@ -178,14 +154,6 @@ class Adafruit_FONA : public FONAStreamType {
 
   // PWM (buzzer)
   boolean setPWM(uint16_t period, uint8_t duty = 50);
-
-  // Phone calls
-  boolean callPhone(char *phonenum);
-  uint8_t getCallStatus(void);
-  boolean hangUp(void);
-  boolean pickUp(void);
-  boolean callerIdNotification(boolean enable, uint8_t interrupt = 0);
-  boolean incomingCallNumber(char* phonenum);
 
   // Helper functions to verify responses.
   boolean expectReply(FONAFlashStringPtr reply, uint16_t timeout = 10000);
@@ -242,25 +210,5 @@ class Adafruit_FONA : public FONAStreamType {
   FONAStreamType *mySerial;
 };
 
-class Adafruit_FONA_3G : public Adafruit_FONA {
-
- public:
-  Adafruit_FONA_3G (int8_t r) : Adafruit_FONA(r) { _type = FONA3G_A; }
-
-    boolean getBattVoltage(uint16_t *v);
-    boolean playToolkitTone(uint8_t t, uint16_t len);
-    boolean hangUp(void);
-    boolean pickUp(void);
-    boolean enableGPRS(boolean onoff);
-    boolean enableGPS(boolean onoff);
-
- protected:
-    boolean parseReply(FONAFlashStringPtr toreply,
-		       float *f, char divider, uint8_t index);
-
-    boolean sendParseReply(FONAFlashStringPtr tosend,
-			   FONAFlashStringPtr toreply,
-			   float *f, char divider = ',', uint8_t index=0);
-};
 
 #endif
