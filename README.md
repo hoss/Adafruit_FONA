@@ -2,7 +2,7 @@
 
 
 
-##A fork of the official Adafruit FONA library, streamlined to minimize filesize on a Feather that only needs internet connectivity.
+## A fork of the official Adafruit FONA library, streamlined to minimize filesize on a Feather that only needs internet connectivity.
 
  * All 3G code removed
  * All SMS code removed
