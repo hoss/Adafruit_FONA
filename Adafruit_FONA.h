@@ -93,26 +93,11 @@ class Adafruit_FONA : public FONAStreamType {
   boolean getBattVoltage(uint16_t *v);
 
   // SIM query
-  uint8_t unlockSIM(char *pin);
-  uint8_t getSIMCCID(char *ccid);
   uint8_t getNetworkStatus(void);
   uint8_t getRSSI(void);
 
   // IMEI
   uint8_t getIMEI(char *imei);
-
-  // set Audio output
-  boolean setAudio(uint8_t a);
-  boolean setVolume(uint8_t i);
-  uint8_t getVolume(void);
-  boolean playToolkitTone(uint8_t t, uint16_t len);
-  boolean setMicVolume(uint8_t a, uint8_t level);
-  boolean playDTMF(char tone);
-
-  // Time
-  boolean enableNetworkTimeSync(boolean onoff);
-  boolean enableNTPTimeSync(boolean onoff, FONAFlashStringPtr ntpserver=0);
-  boolean getTime(char *buff, uint16_t maxlen);
 
   // GPRS handling
   boolean enableGPRS(boolean onoff);
@@ -151,9 +136,6 @@ class Adafruit_FONA : public FONAStreamType {
 
   // HTTPS
   void setHTTPSRedirect(boolean onoff);
-
-  // PWM (buzzer)
-  boolean setPWM(uint16_t period, uint8_t duty = 50);
 
   // Helper functions to verify responses.
   boolean expectReply(FONAFlashStringPtr reply, uint16_t timeout = 10000);
